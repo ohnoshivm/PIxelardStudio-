@@ -1,0 +1,45 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="/comps/a/base.css"><link rel="stylesheet" href="/fonts/newsreader/fonts.css"><script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+<style>body{background:#efeadf;color:#1a1917}
+.t{position:absolute;left:80px;top:64px;font-size:46px;line-height:1;font-variation-settings:"wdth" 112,"wght" 540}
+.d{position:absolute;left:82px;top:122px;width:760px;font-size:14px;line-height:1.5;opacity:.72}
+.col{position:absolute;top:200px;width:660px}
+.col h4{font-size:13px;font-variation-settings:"wdth" 100,"wght" 600;margin-bottom:4px}
+.col p{font-size:12px;opacity:.6;margin-bottom:16px;line-height:1.45}
+.meas{position:relative;border-left:1px solid rgba(26,25,23,.35);border-right:1px solid rgba(26,25,23,.35);margin-bottom:12px}
+.pal{position:absolute;top:640px;display:flex;gap:10px;align-items:flex-end}
+.pal .name{position:absolute;top:-34px;left:0;font-size:13px;font-variation-settings:"wdth" 100,"wght" 600;white-space:nowrap}
+.pal .hex{position:absolute;top:-17px;left:0;font-size:11px;opacity:.6;white-space:nowrap}
+</style></head><body>
+<div class="t">Type and colour: options, not decisions.</div>
+<div class="d">Two type directions and three palette directions, all obeying the same rules. Interim open-source faces stand in for a licensed or custom "Pixelards Setting" family. Nothing here is final.</div>
+<div class="col" style="left:80px" id="c1"><h4>Direction 1 · Wide-range grotesk</h4><p>Fit by the width axis (wdth 50–150). Interim: Anybody. Licensed candidates: GT Flexa, Obviously. Long term: a custom family with wdth 50–170.</p></div>
+<div class="col" style="left:860px" id="c2"><h4>Direction 2 · Optical-size serif</h4><p>Fit by size, optical size and phrase breaks, the way a newspaper re-sets a story. Interim: Newsreader (opsz 6–72). Licensed candidates: Tiempos, GT Super.</p></div>
+<div id="pals"></div>
+<script type="module">
+import { fontsReady, done, setPiece, PALETTES, measureIn, fitLine } from '/comps/a/lib.js';
+await fontsReady(); await document.fonts.load('500 60px Newsreader');
+for (const [col, fam] of [['c1', 'Anybody'], ['c2', 'Newsreader']]) {
+  const c = document.getElementById(col);
+  for (const m of [600, 380, 220]) {
+    const box = document.createElement('div'); box.className = 'meas'; box.style.width = m + 'px'; c.appendChild(box);
+    const el = document.createElement('div'); el.textContent = 'Pixelards'; el.style.fontFamily = fam; el.style.lineHeight = .95;
+    if (fam === 'Anybody') { measureIn(el); fitLine(el, m, m * 0.2, { wght: 520 }); }
+    else { el.style.whiteSpace = 'nowrap'; el.style.fontWeight = 500; el.style.fontOpticalSizing = 'auto'; el.style.display = 'inline-block'; measureIn(el); let s = 100; el.style.fontSize = s + 'px'; const w = el.getBoundingClientRect().width; el.style.fontSize = (s * m / w) + 'px'; el.style.letterSpacing = '-0.01em'; }
+    box.appendChild(el);
+  }
+}
+const P = [['Proof', 'proof'], ['Board', 'board'], ['Night run', 'nightrun']];
+const pals = document.getElementById('pals');
+P.forEach(([name, key], i) => {
+  const pal = PALETTES[key];
+  const g = document.createElement('div'); g.className = 'pal'; g.style.left = (80 + i * 490) + 'px';
+  g.style.background = pal.ground; g.style.padding = '20px'; g.style.width = '450px'; g.style.height = '226px';
+  g.innerHTML = `<div class="name">${name}</div><div class="hex">stock ${pal.paper} · ink ${pal.ink} · mark ${pal.proof} · ground ${pal.ground}</div>`;
+  for (const [w, h, b, seq] of [[110, 186, [{ type: 'fit', lines: ['Built', 'to be', 'cut.'], size: 50, wght: 560 }, { type: 'fit', lines: ['Pixel', 'ards'], size: 20, wght: 430, at: 'bottom' }], 0],
+      [150, 150, [{ type: 'fit', lines: ['Pixel', 'ards'], size: 40, wght: 540 }], 1], [120, 60, [{ type: 'fit', lines: ['Pixelards'], size: 20, wght: 520 }], 2]]) {
+    const p = setPiece({ w, h, seq, blocks: b }, pal); p.style.background = pal.paper; p.style.flex = 'none'; g.appendChild(p);
+  }
+  pals.appendChild(g);
+});
+await done();
+</script></body></html>

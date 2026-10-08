@@ -1,0 +1,65 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="/comps/a/base.css">
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+<style>
+:root{--proof:#ff2e7e}
+.lead{position:absolute;left:80px;top:300px;width:520px;font-size:31px;line-height:1.24;font-variation-settings:"wdth" 96,"wght" 380;letter-spacing:-.004em}
+.hint{position:absolute;left:80px;top:610px;width:440px;font-size:14px;line-height:1.5;font-variation-settings:"wdth" 100,"wght" 420;opacity:.7}
+.hint b{font-variation-settings:"wdth" 100,"wght" 560;opacity:1}
+.foot{position:absolute;left:80px;bottom:36px;font-size:12px;opacity:.6;font-variation-settings:"wdth" 100,"wght" 430}
+.guide{position:absolute;height:1px;background:var(--proof)}
+.det{position:absolute;font-size:11.5px;color:#ebe5d8;font-variation-settings:"wdth" 100,"wght" 480;white-space:nowrap}
+.tick{position:absolute;width:10px;height:1px;background:#ebe5d8;opacity:.55}
+.cursor{position:absolute;width:13px;height:13px;border:1.4px solid #ebe5d8;border-radius:50%}
+</style></head><body>
+<canvas id="gl"></canvas>
+<div class="ui" id="ui">
+  <div class="hdr"><span class="wm" id="wm">Pixelards</span><nav><span>Work</span><span>Rules</span><span>Studio</span><span class="cta">Start a project</span></nav></div>
+  <div class="lead">Pixelards is an Australian creative studio. We build brands designed to be distributed: one identity that stays whole in every format, channel and search result.</div>
+  <div class="hint"><b>Built to be cut.</b> Move across the sheet to see where it can be cut. Click to cut it. Every piece re-sets itself and stays whole.</div>
+  <div class="foot">Scroll to see one sheet become every channel ↓</div>
+</div>
+<script type="module">
+import { stage, setPiece, fontsReady, done, measureIn, fitLine } from '/comps/a/lib.js';
+await fontsReady();
+const W = 1600, H = 900, fov = 20, D = (H / 2) / Math.tan(fov / 2 * Math.PI / 180);
+const S = stage({ palette: 'proof', cam: { fov, pos: [0, 0, D], look: [0, 0, 0] }, light: { pos: [-3600, 900, 1300], target: [300, 0, 0], angle: 0.5 } });
+const toW = (sx, sy) => [sx - W / 2, H / 2 - sy];
+// header wordmark obeys the fit rule too
+const wm = document.getElementById('wm'); measureIn(wm); fitLine(wm, 150, 20, { wght: 560 }); document.querySelector('.hdr').prepend(wm);
+// the hero sheet: 1:√2, columns 6–12
+const sh = 740, sw = Math.round(sh / Math.SQRT2), cx = 1130, cy = 492;
+const [wx, wy] = toW(cx, cy);
+// ghost-preview state: the original fades, the two would-be pieces show their re-set
+const cutY = Math.round(sw * 1.0); // detent: a square on top
+const piece = document.createElement('div'); piece.style.cssText = `position:relative;width:${sw}px;height:${sh}px`;
+const orig = setPiece({ w: sw, h: sh, seq: 0, blocks: [
+  { type: 'fit', lines: ['Built', 'to be', 'cut.'], size: 200, wght: 560, lh: 0.84 },
+  { type: 'fit', lines: ['Pixelards'], size: 80, wght: 430, at: 'bottom', lh: 0.9 },
+] }, S.pal);
+orig.style.position = 'absolute'; piece.appendChild(orig);
+const ghostTop = setPiece({ w: sw, h: cutY, seq: 0, blocks: [
+  { type: 'fit', lines: ['Built to', 'be cut.'], size: 150, wght: 560, lh: 0.84 },
+  { type: 'fit', lines: ['Pixelards'], size: 60, wght: 430, at: 'bottom', lh: 0.9 },
+] }, S.pal);
+
+const ghostBot = setPiece({ w: sw, h: sh - cutY, seq: 1, blocks: [
+  { type: 'fit', lines: ['Built to be cut.'], size: 60, wght: 560, lh: 0.9 },
+  { type: 'fit', lines: ['Pixelards'], size: 40, wght: 430, at: 'bottom', lh: 0.9 },
+] }, S.pal);
+
+const guide = document.createElement('div'); guide.style.cssText = `position:absolute;left:-14px;width:${sw + 28}px;top:${cutY}px;height:1px;background:#ff2e7e`; piece.appendChild(guide);
+S.addPiece({ x: wx, y: wy, w: sw, h: sh, content: piece });
+// UI overlay: detent ticks + label + cursor (screen space)
+const ui = document.getElementById('ui');
+const left = cx - sw / 2, top = cy - sh / 2, right = cx + sw / 2;
+for (const [r, name] of [[1, 'Square'], [4/5, '4:5'], [9/16, '9:16'], [1/1.91, 'Link card'], [3/2, '2:3']]) {
+  const yy = top + sw / r; if (yy > top + sh - 20) continue;
+  const t = document.createElement('div'); t.className = 'tick'; t.style.left = (right + 10) + 'px'; t.style.top = yy + 'px'; ui.appendChild(t);
+}
+const lab = document.createElement('div'); lab.className = 'det';
+lab.innerHTML = 'Square post <span style="opacity:.5">|</span> Banner 2.4:1';
+lab.style.left = (right + 28) + 'px'; lab.style.top = (top + cutY - 8) + 'px'; ui.appendChild(lab);
+const cur = document.createElement('div'); cur.className = 'cursor'; cur.style.left = (left + sw * 0.62 - 6) + 'px'; cur.style.top = (top + cutY - 6) + 'px'; ui.appendChild(cur);
+S.render(); await done();
+</script></body></html>

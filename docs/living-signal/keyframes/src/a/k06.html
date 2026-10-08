@@ -1,0 +1,50 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="/comps/a/base.css"><script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+<style>:root{--proof:#ff2e7e} body{background:#161514;color:#ebe5d8}
+.title{position:absolute;left:80px;top:110px;font-size:56px;line-height:1;font-variation-settings:"wdth" 112,"wght" 520}
+.sub{position:absolute;left:82px;top:178px;width:430px;font-size:14px;line-height:1.55;opacity:.72}
+.tile{position:absolute;overflow:hidden}
+.tile .img{position:absolute;inset:0}
+.tile .bk{position:absolute;left:0;width:6px;height:30px;background:#ff2e7e}
+.cap{position:absolute;font-size:13px;line-height:1.35;font-variation-settings:"wdth" 100,"wght" 430;white-space:nowrap}
+.cap b{font-variation-settings:"wdth" 100,"wght" 600}
+.cap i{font-style:normal;opacity:.55}
+.list{position:absolute;left:80px;top:300px;width:420px}
+.row{display:flex;justify-content:space-between;padding:13px 0;border-top:1px solid rgba(235,229,216,.16);font-size:15px;font-variation-settings:"wdth" 100,"wght" 430}
+.row span:last-child{opacity:.55;font-size:13px}
+</style></head><body>
+<div class="ui" id="ui" style="color:#ebe5d8">
+ <div class="hdr"><span class="wm" id="wm">Pixelards</span><nav><span style="opacity:1">Work</span><span>Rules</span><span>Studio</span><span class="cta">Start a project</span></nav></div>
+ <div class="title">Work</div>
+ <div class="sub">Laid out in the shapes you cut on the way in. Client work is shown as it shipped: no effects on it.</div>
+ <div class="list">
+  <div class="row"><span>Placeholder project 01</span><span>Identity · Social · Search</span></div>
+  <div class="row"><span>Placeholder project 02</span><span>Campaign · Video</span></div>
+  <div class="row"><span>Placeholder project 03</span><span>Website · E-commerce</span></div>
+  <div class="row"><span>Placeholder project 04</span><span>Performance · Automation</span></div>
+  <div class="row" style="border-bottom:1px solid rgba(235,229,216,.16)"><span>All work</span><span>18 projects · placeholder count</span></div>
+ </div>
+</div>
+<script type="module">
+import { fontsReady, done, measureIn, fitLine } from '/comps/a/lib.js';
+await fontsReady();
+const wm = document.getElementById('wm'); measureIn(wm); fitLine(wm, 150, 20, { wght: 560 }); document.querySelector('.hdr').prepend(wm);
+const ui = document.getElementById('ui');
+// the visitor's cut plan (from the hero), normalised to the grid: story | profile/post | banner
+const ox = 620, oy = 110, U = 1.62;
+const tiles = [
+  { r: [0, 0, 274, 488], n: '01', t: 'Placeholder project 01', d: 'Identity system · Social', g: ['#3b3a37', '#5c574f'] },
+  { r: [288, 0, 200, 200], n: '02', t: 'Placeholder project 02', d: 'Campaign · Video', g: ['#4a4741', '#2c2b29'] },
+  { r: [288, 214, 200, 274], n: '03', t: 'Placeholder project 03', d: 'Website · E-commerce', g: ['#55514a', '#34322f'] },
+];
+tiles.forEach((p, i) => {
+  const [x, y, w, h] = p.r.map(v => v * U);
+  const el = document.createElement('div'); el.className = 'tile';
+  el.style.cssText = `left:${ox + x}px;top:${oy + y}px;width:${w}px;height:${h - 40}px`;
+  el.innerHTML = `<div class="img" style="background:linear-gradient(160deg,${p.g[0]},${p.g[1]})"></div><div class="bk" style="top:${14 + i * 30}px"></div>
+   <div style="position:absolute;left:18px;bottom:16px;font-size:12px;opacity:.6">Client media goes here, unaltered</div>`;
+  ui.appendChild(el);
+  const c = document.createElement('div'); c.className = 'cap';
+  c.innerHTML = `<b>${p.t}</b> <i>· ${p.d}</i>`; c.style.left = (ox + x) + 'px'; c.style.top = (oy + y + h - 30) + 'px'; ui.appendChild(c);
+});
+await done();
+</script></body></html>

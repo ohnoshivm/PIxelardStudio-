@@ -1,0 +1,44 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="/comps/a/base.css"><script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+<style>:root{--proof:#ff2e7e}
+.title{position:absolute;left:80px;top:120px;font-size:84px;line-height:.94;font-variation-settings:"wdth" 108,"wght" 540;letter-spacing:-.015em}
+.form{position:absolute;left:80px;top:330px;width:560px}
+.f{border-bottom:1px solid rgba(235,229,216,.35);padding:16px 0 12px;font-size:16px;opacity:.9;font-variation-settings:"wdth" 100,"wght" 420;display:flex;justify-content:space-between}
+.f span:last-child{opacity:.45}
+.big{height:96px;align-items:flex-start}
+.send{margin-top:26px;display:inline-flex;align-items:center;gap:12px;font-size:16px;font-variation-settings:"wdth" 100,"wght" 580}
+.send::before{content:"";width:4px;height:18px;background:#ff2e7e}
+.note{position:absolute;left:880px;top:700px;width:560px;font-size:13px;line-height:1.5;opacity:.7}
+.foot{position:absolute;left:80px;right:80px;bottom:34px;display:flex;justify-content:space-between;font-size:13px;opacity:.7}
+</style></head><body><canvas id="gl"></canvas>
+<div class="ui">
+ <div class="hdr"><span class="wm" id="wm">Pixelards</span><nav><span>Work</span><span>Rules</span><span>Studio</span><span class="cta" style="opacity:1">Start a project</span></nav></div>
+ <div class="title">Start a<br>project.</div>
+ <div class="form">
+  <div class="f"><span>Your name</span><span></span></div>
+  <div class="f"><span>Email</span><span></span></div>
+  <div class="f big"><span>What needs to travel? A brand, a launch, a channel…</span><span></span></div>
+  <div class="f"><span>Budget range</span><span>Select ↓</span></div>
+  <div class="send">Send the brief</div>
+ </div>
+ <div class="note"><b style="font-variation-settings:'wdth' 100,'wght' 600">Your four pieces, gathered.</b> The pieces you cut on the way in travel with your brief, back marks aligned: proof that a set belongs together.</div>
+ <div class="foot"><span>hello@pixelards.example (placeholder) · Instagram · LinkedIn · Australia (AEST)</span><span>Keep scrolling → Work</span></div>
+</div>
+<script type="module">
+import { stage, setPiece, fontsReady, done, measureIn, fitLine } from '/comps/a/lib.js';
+await fontsReady();
+const W = 1600, H = 900, fov = 20, D = (H / 2) / Math.tan(fov / 2 * Math.PI / 180);
+const S = stage({ palette: 'proof', cam: { fov, pos: [0, 0, D], look: [0, 0, 0] }, light: { pos: [-3600, 900, 1300], target: [300, 0, 0], angle: 0.5 } });
+const wm = document.getElementById('wm'); measureIn(wm); fitLine(wm, 150, 20, { wght: 560 }); document.querySelector('.hdr').prepend(wm);
+const toW = (sx, sy) => [sx - W / 2, H / 2 - sy];
+// the visitor's hero pieces, gathered: aligned top-left, each one bar-width further left, bars stepping down
+const P = [[274, 488, [{ type: 'fit', lines: ['Built', 'to be', 'cut.'], size: 110, wght: 560 }, { type: 'fit', lines: ['Pixel', 'ards'], size: 46, wght: 430, at: 'bottom' }]],
+  [214, 274, []], [214, 214, []], [488, 202, []]];
+const bw = 12, bh = 24, x0 = 1010, y0 = 150;
+P.forEach(([w, h, blocks], k) => {
+  const piece = setPiece({ w, h, back: false, blocks }, S.pal);
+  const bar = document.createElement('div'); bar.style.cssText = `position:absolute;left:0;top:${16 + k * bh}px;width:${bw}px;height:${bh}px;background:#ff2e7e`; piece.appendChild(bar);
+  const [wx, wy] = toW(x0 - k * bw + w / 2, y0 + h / 2);
+  S.addPiece({ x: wx, y: wy, w, h, z: (P.length - k) * 2.6, content: piece, opaque: true });
+});
+S.render(); await done();
+</script></body></html>

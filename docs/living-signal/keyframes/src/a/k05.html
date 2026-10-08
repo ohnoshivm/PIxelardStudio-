@@ -1,0 +1,34 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="/comps/a/base.css">
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+<style>:root{--proof:#ff2e7e}
+.title{position:absolute;left:80px;top:300px;width:470px;font-size:64px;line-height:.98;font-variation-settings:"wdth" 104,"wght" 520;letter-spacing:-.012em}
+.sub{position:absolute;left:82px;top:470px;width:440px;font-size:15px;line-height:1.55;opacity:.76;font-variation-settings:"wdth" 100,"wght" 420}
+.lab{font-family:Anybody;font-size:15px;color:#ebe5d8;font-variation-settings:"wdth" 100,"wght" 460;white-space:nowrap;opacity:.8}
+</style></head><body><canvas id="gl"></canvas>
+<div class="ui" id="ui">
+ <div class="hdr"><span class="wm" id="wm">Pixelards</span><nav><span>Work</span><span>Rules</span><span>Studio</span><span class="cta">Start a project</span></nav></div>
+ <div class="title">Ten formats.<br>One signal.</div>
+ <div class="sub">Gathered, every piece lands one step lower than the last, and the marks on their spines lock into a single line. However far a campaign travels, it stays one thing.</div>
+</div>
+<script type="module">
+import { stage, setPiece, fontsReady, done, measureIn, fitLine } from '/comps/a/lib.js';
+await fontsReady();
+const S = stage({ palette: 'proof', cam: { fov: 22, pos: [420, -950, 2150], look: [420, 140, 0] }, light: { pos: [-3400, 1600, 1500], target: [300, 0, 0], angle: 0.6 } });
+const wm = document.getElementById('wm'); measureIn(wm); fitLine(wm, 150, 20, { wght: 560 }); document.querySelector('.hdr').prepend(wm);
+// the gather: pieces aligned at their top-left spine corner, stacked, each shifted right by one bar-width,
+// so the stepped back marks form one unbroken diagonal down the left edge
+const formats = [[520, 735, 'Sheet'], [420, 747, 'Story'], [460, 690, 'Poster'], [470, 588, 'Post'], [520, 140, 'Search'], [440, 160, 'Answer'], [700, 175, 'Roadside'], [600, 200, 'Email'], [560, 293, 'Link card'], [480, 480, 'Square']];
+const bw = 16, bh = 22, m = 18;  // fixed bar geometry across the set so the diagonal is continuous
+const x0 = 260, y0 = 520;
+formats.forEach(([w, h, name], k) => {
+  const piece = setPiece({ w, h, back: false, blocks: k === 0 ? [
+      { type: 'fit', lines: ['Built', 'to be', 'cut.'], size: 160, wght: 560 }, { type: 'fit', lines: ['Pixelards'], size: 60, wght: 430, at: 'bottom' } ]
+    : [] }, S.pal);
+  // custom back mark positioned for collation: step k
+  const bar = document.createElement('div'); bar.style.cssText = `position:absolute;left:0;top:${m + k * bh}px;width:${bw}px;height:${bh}px;background:#ff2e7e`; piece.appendChild(bar);
+  const x = x0 - k * bw + w / 2, y = y0 - h / 2;
+  S.addPiece({ x, y, w, h, z: (formats.length - k) * 2.4, content: piece, opaque: true });
+});
+S.render(); await done();
+</script></body></html>

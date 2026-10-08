@@ -1,0 +1,67 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="/comps/a/base.css">
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+<style>:root{--proof:#ff2e7e}
+.title{position:absolute;left:80px;top:96px;font-size:56px;line-height:1;font-variation-settings:"wdth" 112,"wght" 520;letter-spacing:-.01em}
+.sub{position:absolute;left:82px;top:168px;width:520px;font-size:15px;line-height:1.5;opacity:.75;font-variation-settings:"wdth" 100,"wght" 420}
+.idx{position:absolute;right:80px;top:100px;font-size:12px;opacity:.6;text-align:right}
+.lab{font-family:Anybody;font-size:20px;color:#ebe5d8;font-variation-settings:"wdth" 100,"wght" 470;white-space:nowrap;opacity:.85}
+.lab i{font-style:normal;opacity:.55}
+</style></head><body><canvas id="gl"></canvas>
+<div class="ui" id="ui">
+ <div class="hdr"><span class="wm" id="wm">Pixelards</span><nav><span>Work</span><span>Rules</span><span>Studio</span><span class="cta">Start a project</span></nav></div>
+ <div class="title" id="ttl">One sheet, every channel.</div>
+ <div class="sub">Scroll cuts the sheet. Every piece turns to face where it's going and re-sets itself to fit it. Where the typeface can't travel, the sentence still does.</div>
+</div>
+<script type="module">
+import { stage, setPiece, fontsReady, done, measureIn, fitLine } from '/comps/a/lib.js';
+await fontsReady();
+const S = stage({ palette: 'proof', cam: { fov: 26, pos: [180, -1900, 2350], look: [180, 330, 0] }, light: { pos: [-3800, 1800, 1500], target: [0, 0, 0], angle: 0.6 } });
+const wm = document.getElementById('wm'); measureIn(wm); fitLine(wm, 150, 20, { wght: 560 }); document.querySelector('.hdr').prepend(wm);
+const pal = S.pal;
+const mk = (w, h, seq, blocks) => setPiece({ w, h, seq, blocks }, pal);
+const label = (txt, x, y, rot = 0) => { const d = document.createElement('div'); d.className = 'lab'; d.innerHTML = txt; S.addLabel(d, { x, y, rot }); };
+// the press sheet, mid-cut: hairline cut lines drawn on it, one piece already gone
+const PW = 900, PH = 636;
+const sheet = mk(PW, PH, 0, [
+  { type: 'fit', lines: ['Built to be cut.'], size: 120, wght: 560, lh: 0.86 },
+  { type: 'fit', lines: ['Pixelards'], size: 120, wght: 430, at: 'bottom', lh: 0.9 } ]);
+for (const [x1, y1, x2, y2] of [[0, 300, PW, 300], [520, 0, 520, 300], [300, 300, 300, PH]]) {
+  const l = document.createElement('div'); const hor = y1 === y2;
+  l.style.cssText = `position:absolute;left:${x1}px;top:${y1}px;${hor ? `width:${x2 - x1}px;height:2px` : `width:2px;height:${y2 - y1}px`};background:#ff2e7e`;
+  sheet.appendChild(l);
+}
+S.addPiece({ x: -640, y: 460, w: PW, h: PH, content: sheet });
+
+// pieces fanned out toward the viewer, each re-set for its format
+const pieces = [
+  { f: 'Story', s: '1080 × 1920', w: 180, h: 320, x: -20, y: 390, z: 30, rot: -0.06, seq: 1, b: [
+      { type: 'fit', lines: ['Built', 'to be', 'cut.'], size: 80, wght: 560 }, { type: 'fit', lines: ['Pixel', 'ards'], size: 40, wght: 430, at: 'bottom' } ] },
+  { f: 'Post', s: '1080 × 1350', w: 220, h: 275, x: 250, y: 400, z: 18, rot: 0.04, seq: 2, b: [
+      { type: 'fit', lines: ['Built to', 'be cut.'], size: 60, wght: 560 }, { type: 'fit', lines: ['Pixelards'], size: 24, wght: 430, at: 'bottom' } ] },
+  { f: 'Square', s: '1080 × 1080', w: 210, h: 210, x: 520, y: 420, z: 12, rot: -0.03, seq: 3, b: [
+      { type: 'fit', lines: ['Pixel', 'ards'], size: 70, wght: 520 } ] },
+  { f: 'Street poster', s: '2:3', w: 220, h: 330, x: 800, y: 400, z: 24, rot: 0.05, seq: 4, b: [
+      { type: 'fit', lines: ['Built', 'to be', 'cut.'], size: 90, wght: 560 }, { type: 'fit', lines: ['Pixelards'], size: 24, wght: 430, at: 'bottom' } ] },
+  { f: 'Roadside', s: '~4:1', w: 640, h: 160, x: 240, y: 30, z: 8, rot: -0.01, seq: 5, b: [
+      { type: 'fit', lines: ['Built to be cut.'], size: 60, wght: 560 }, { type: 'fit', lines: ['Pixelards'], size: 26, wght: 430, at: 'bottom' } ] },
+  { f: 'Link card', s: '1200 × 628', w: 300, h: 157, x: 860, y: 40, z: 14, rot: 0.03, seq: 6, b: [
+      { type: 'fit', lines: ['Built to be cut.'], size: 30, wght: 560 }, { type: 'fit', lines: ['Pixelards'], size: 18, wght: 430, at: 'bottom' } ] },
+  { f: 'Email header', s: '600 px', w: 380, h: 120, x: -330, y: -230, z: 10, rot: 0.015, seq: 7, b: [
+      { type: 'fit', lines: ['Pixelards'], size: 30, wght: 520 },
+      { type: 'text', html: 'Re-set for the inbox: subject line and preheader written to fit.', size: 12, wght: 420, at: 'bottom', bottom: 10 } ] },
+];
+for (const p of pieces) {
+  S.addPiece({ x: p.x, y: p.y, w: p.w, h: p.h, z: p.z, rot: p.rot, content: mk(p.w, p.h, p.seq, p.b) });
+  label(`${p.f} <i>· ${p.s}</i>`, p.x - p.w / 2 + 4, p.y - p.h / 2 - 46);
+}
+// text-only pieces: the typeface is stripped away, the sentence survives
+const plain = (w, h, seq, html) => { const r = mk(w, h, seq, []); const d = document.createElement('div'); d.innerHTML = html; d.style.cssText = `position:absolute;left:${Math.round(Math.min(w, h) / 12)}px;top:${Math.round(Math.min(w, h) / 12)}px;right:${Math.round(Math.min(w, h) / 12)}px;font-family:Arial,Helvetica,sans-serif;color:${pal.ink}`; r.appendChild(d); return r; };
+S.addPiece({ x: 250, y: -250, w: 470, h: 120, z: 6, rot: -0.012, content: plain(470, 120, 8,
+  `<div style="font-size:11px;opacity:.6">pixelards.example</div><div style="font-size:19px;margin:3px 0 4px;color:#1a1917"><b style="font-weight:600">Pixelards: brand identities built to travel</b></div><div style="font-size:12px;line-height:1.35;opacity:.8">An Australian creative studio. One identity, set to stay whole across every format, channel and search result.</div>`) });
+label('Search listing <i>· title ≈ 60 characters</i>', 20, -356);
+S.addPiece({ x: 830, y: -250, w: 360, h: 128, z: 9, rot: 0.02, content: plain(360, 128, 9,
+  `<div style="font-size:11px;opacity:.6">An assistant's answer</div><div style="font-size:15px;line-height:1.38;margin-top:5px">“Pixelards is an Australian creative studio that designs brand identities to work across every channel and format.”</div>`) });
+label('AI answer <i>· written to be quoted</i>', 655, -360);
+S.render(); await done();
+</script></body></html>

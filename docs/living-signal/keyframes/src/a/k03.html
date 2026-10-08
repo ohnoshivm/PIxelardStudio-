@@ -1,0 +1,51 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="/comps/a/base.css">
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+<style>:root{--proof:#ff2e7e}
+.lead{position:absolute;left:80px;top:300px;width:500px;font-size:31px;line-height:1.24;font-variation-settings:"wdth" 96,"wght" 380}
+.state{position:absolute;left:80px;top:610px;width:440px;font-size:14px;line-height:1.55;font-variation-settings:"wdth" 100,"wght" 420;opacity:.75}
+.state b{font-variation-settings:"wdth" 100,"wght" 580;opacity:1}
+.foot{position:absolute;left:80px;bottom:36px;font-size:12px;opacity:.6}
+.plab{position:absolute;font-size:11.5px;color:#ebe5d8;font-variation-settings:"wdth" 100,"wght" 460;white-space:nowrap;opacity:.82}
+</style></head><body><canvas id="gl"></canvas>
+<div class="ui" id="ui">
+ <div class="hdr"><span class="wm" id="wm">Pixelards</span><nav><span>Work</span><span>Rules</span><span>Studio</span><span class="cta">Start a project</span></nav></div>
+ <div class="lead">Pixelards is an Australian creative studio. We build brands designed to be distributed: one identity that stays whole in every format, channel and search result.</div>
+ <div class="state"><b>4 pieces. All whole.</b> Each piece re-set itself for its format: nothing was cropped. Keep cutting, or press <b>G</b> to gather them back into one sheet.</div>
+ <div class="foot">Scroll to see one sheet become every channel ↓</div>
+</div>
+<script type="module">
+import { stage, setPiece, fontsReady, done, measureIn, fitLine } from '/comps/a/lib.js';
+await fontsReady();
+const W = 1600, H = 900, fov = 20, D = (H / 2) / Math.tan(fov / 2 * Math.PI / 180);
+const S = stage({ palette: 'proof', cam: { fov, pos: [0, 0, D], look: [0, 0, 0] }, light: { pos: [-3600, 900, 1300], target: [300, 0, 0], angle: 0.5 } });
+const toW = (sx, sy) => [sx - W / 2, H / 2 - sy];
+const wm = document.getElementById('wm'); measureIn(wm); fitLine(wm, 150, 20, { wght: 560 }); document.querySelector('.hdr').prepend(wm);
+const ui = document.getElementById('ui');
+// original sheet 523 x 740; cut plan in sheet coordinates
+const sw = 488, sh = 690, gap = 30;
+const P = [
+  { name: 'Story · 1080 × 1920', r: [0, 0, 274, 488], off: [0, 0], z: 6, rot: -0.012, seq: 0, blocks: [
+      { type: 'fit', lines: ['Built', 'to be', 'cut.'], size: 120, wght: 560, lh: 0.84 },
+      { type: 'fit', lines: ['Pixel', 'ards'], size: 50, wght: 430, at: 'bottom', lh: 0.86 } ] },
+  { name: 'Profile · 400 × 400', r: [274, 0, 214, 214], off: [gap, 0], z: 9, rot: 0.02, seq: 1, blocks: [
+      { type: 'fit', lines: ['Pixel', 'ards'], size: 80, wght: 520, lh: 0.84 } ] },
+  { name: 'Post · 1080 × 1350', r: [274, 214, 214, 274], off: [gap, gap], z: 4, rot: -0.006, seq: 2, blocks: [
+      { type: 'fit', lines: ['Built to', 'be cut.'], size: 70, wght: 560, lh: 0.86 },
+      { type: 'fit', lines: ['Pixelards'], size: 30, wght: 430, at: 'bottom', lh: 0.9 } ] },
+  { name: 'Banner · 1200 × 500', r: [0, 488, 488, 202], off: [0, 2 * gap], z: 7, rot: 0.008, seq: 3, blocks: [
+      { type: 'fit', lines: ['Built to be cut.'], size: 60, wght: 560, lh: 0.9 },
+      { type: 'fit', lines: ['Pixelards'], size: 30, wght: 430, at: 'bottom', lh: 0.9 } ] },
+];
+// place the cut plan in columns 6–12
+const ox = 860, oy = 96;
+for (const p of P) {
+  const [x, y, w, h] = p.r;
+  const sx = ox + x + p.off[0] + w / 2, sy = oy + y + p.off[1] + h / 2;
+  const [wx, wy] = toW(sx, sy);
+  S.addPiece({ x: wx, y: wy, w, h, z: p.z, rot: p.rot, content: setPiece({ w, h, seq: p.seq, blocks: p.blocks }, S.pal) });
+  const l = document.createElement('div'); l.className = 'plab'; l.textContent = p.name;
+  l.style.left = (ox + x + p.off[0]) + 'px'; l.style.top = (oy + y + p.off[1] + h + 10) + 'px'; ui.appendChild(l);
+}
+S.render(); await done();
+</script></body></html>

@@ -1,0 +1,11 @@
+@import url('/fonts/anybody/fonts.css');
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;-webkit-font-smoothing:antialiased;font-family:Anybody, sans-serif}
+#gl{position:absolute;left:0;top:0;width:100%;height:100%;display:block}
+.ui{position:absolute;inset:0;pointer-events:none;color:#ebe5d8;z-index:5}
+.ui .hdr{position:absolute;left:80px;right:80px;top:34px;display:flex;justify-content:space-between;align-items:baseline;font-size:15px;font-variation-settings:"wdth" 100,"wght" 420;letter-spacing:.005em}
+.ui .hdr nav span{margin-left:28px;opacity:.82}
+.ui .hdr nav span.cta{opacity:1}
+.ui .hdr nav span.cta::before{content:"";display:inline-block;width:3px;height:15px;background:var(--proof);margin-right:9px;vertical-align:-2px}
+.wm{display:inline-block;white-space:nowrap}
+.cap{font-size:12px;font-variation-settings:"wdth" 100,"wght" 430;letter-spacing:.01em;opacity:.78}

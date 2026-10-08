@@ -1,0 +1,26 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="/comps/a/base.css"><script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+<style>:root{--proof:#ff2e7e} html,body{width:390px;height:844px}
+.ui .hdr{left:20px;right:20px;top:22px}
+.lead{position:absolute;left:20px;top:74px;width:350px;font-size:21px;line-height:1.24;font-variation-settings:"wdth" 96,"wght" 390}
+.hint{position:absolute;left:20px;bottom:30px;width:350px;font-size:12.5px;line-height:1.45;opacity:.72}
+.hint b{font-variation-settings:"wdth" 100,"wght" 580;opacity:1}
+</style></head><body><canvas id="gl"></canvas>
+<div class="ui">
+ <div class="hdr"><span class="wm" id="wm">Pixelards</span><nav><span>Menu</span></nav></div>
+ <div class="lead">An Australian creative studio. We build brands designed to be distributed, whole in every format.</div>
+ <div class="hint"><b>Tap the sheet to cut it.</b> Each piece re-sets itself. Scroll as normal: the sheet never captures your swipe.</div>
+</div>
+<script type="module">
+import { stage, setPiece, fontsReady, done, measureIn, fitLine } from '/comps/a/lib.js';
+await fontsReady();
+const W = 390, H = 844, fov = 20, D = (H / 2) / Math.tan(fov / 2 * Math.PI / 180);
+const S = stage({ palette: 'proof', W, H, cam: { fov, pos: [0, 0, D], look: [0, 0, 0] }, light: { pos: [-2400, 700, 900], target: [100, 0, 0], angle: 0.6 } });
+const wm = document.getElementById('wm'); measureIn(wm); fitLine(wm, 112, 18, { wght: 560 }); document.querySelector('.hdr').prepend(wm);
+const toW = (sx, sy) => [sx - W / 2, H / 2 - sy];
+// after one tap: a story and a banner, re-set
+const sw = 350, top = 232;
+const a = [[20, top, 350, 350, [{ type: 'fit', lines: ['Built to', 'be cut.'], size: 120, wght: 560 }, { type: 'fit', lines: ['Pixelards'], size: 40, wght: 430, at: 'bottom' }], 0, -0.01],
+  [20, top + 368, 350, 145, [{ type: 'fit', lines: ['Built to be cut.'], size: 40, wght: 560 }, { type: 'fit', lines: ['Pixelards'], size: 22, wght: 430, at: 'bottom' }], 1, 0.012]];
+for (const [x, y, w, h, blocks, seq, rot] of a) { const [wx, wy] = toW(x + w / 2, y + h / 2); S.addPiece({ x: wx, y: wy, w, h, z: 4, rot, content: setPiece({ w, h, seq, blocks }, S.pal) }); }
+S.render(); await done();
+</script></body></html>

@@ -1,0 +1,23 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="/comps/a/base.css"><script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+<style>:root{--proof:#ff2e7e} body{background:#161514;color:#ebe5d8}
+.wrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-55%)}
+.ticks{position:absolute;left:0;right:0;height:14px;border-left:1px solid #ebe5d8;border-right:1px solid #ebe5d8;opacity:.5}
+.ticks::after{content:"";position:absolute;left:0;right:0;top:7px;height:1px;background:#ebe5d8}
+.c{position:absolute;left:50%;transform:translateX(-50%);bottom:64px;font-size:13px;font-variation-settings:"wdth" 100,"wght" 440;opacity:.7;letter-spacing:.01em;white-space:nowrap}
+.c b{color:#ebe5d8;font-variation-settings:"wdth" 100,"wght" 600;opacity:1}
+.bar{position:absolute;width:10px;height:50px;background:#ff2e7e}
+</style></head><body>
+<div class="wrap" id="w"></div>
+<div class="c"><b>64%</b> &nbsp;Setting the sheet. The measure widens as the site loads; the name re-sets to fill it.</div>
+<script type="module">
+import { fontsReady, done, measureIn, fitLine } from '/comps/a/lib.js';
+await fontsReady();
+const w = document.getElementById('w'); const measure = 760 * 0.64;
+const top = document.createElement('div'); top.className = 'ticks'; top.style.top = '-34px'; w.appendChild(top);
+let y = 0;
+for (const t of ['Pixel', 'ards']) { const el = document.createElement('div'); el.textContent = t; el.style.lineHeight = .84; el.style.color = '#ebe5d8'; measureIn(el); fitLine(el, measure, 190, { wght: 560 }); el.style.position = 'absolute'; el.style.left = 0; el.style.top = y + 'px'; y += parseFloat(el.style.fontSize) * .84; w.appendChild(el); }
+w.style.width = measure + 'px'; w.style.height = y + 'px';
+const b = document.createElement('div'); b.className = 'bar'; b.style.left = '-30px'; b.style.top = '6px'; w.appendChild(b);
+const lab = document.createElement('div'); lab.style.cssText = 'position:absolute;top:-58px;left:0;right:0;text-align:center;font-size:11px;opacity:.55;font-variation-settings:"wdth" 100,"wght" 460'; lab.textContent = 'measure 486 px · wdth ' + document.querySelector('#w div:nth-of-type(2)').dataset.wdth; w.appendChild(lab);
+await done();
+</script></body></html>

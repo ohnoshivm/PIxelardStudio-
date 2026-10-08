@@ -1,0 +1,45 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="/comps/a/base.css"><link rel="stylesheet" href="/fonts/newsreader/fonts.css"><script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+<style>body{background:#efeadf;color:#1a1917}
+.t{position:absolute;left:80px;top:64px;font-size:46px;line-height:1;font-variation-settings:"wdth" 112,"wght" 540}
+.d{position:absolute;left:82px;top:122px;width:620px;font-size:14px;line-height:1.5;opacity:.72}
+.row{position:absolute;left:80px;right:80px;top:236px;height:380px;display:flex;align-items:flex-end;gap:26px}
+.cell{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.pc{background:#e6e0d3;outline:1px solid rgba(26,25,23,.2);position:relative}
+.lab{font-size:12px;line-height:1.35;font-variation-settings:"wdth" 100,"wght" 460}
+.lab i{font-style:normal;opacity:.55;display:block}
+.half{position:absolute;left:80px;top:680px;display:flex;align-items:flex-end;gap:22px}
+.arrow{font-size:22px;opacity:.5;padding-bottom:40px}
+.cap2{position:absolute;left:880px;top:712px;width:560px;font-size:14px;line-height:1.5;opacity:.75}
+.cap2 b{font-variation-settings:"wdth" 100,"wght" 600;opacity:1;font-size:20px;display:block;margin-bottom:4px}
+.rung{position:absolute;left:80px;right:80px;top:650px;border-top:1px solid rgba(26,25,23,.2)}
+</style></head><body>
+<div class="t">One rule, every size.</div>
+<div class="d">The hierarchy ladder: as a piece shrinks it steps down one rung at a time (claim, then name, then stacked name, then "-ards", then the back mark alone) and never skips a rung. The type is re-set at every size, never scaled as an image.</div>
+<div class="row" id="row"></div>
+<div class="half" id="half"></div>
+<div class="cap2"><b>Half. Still whole.</b>A 1:√2 sheet cut exactly in half gives two sheets of the same proportion. Both halves re-set to the identical composition, turned and at 0.707 scale, as many times as you like. That is ISO 216 paper, used as a brand rule.</div>
+<script type="module">
+import { fontsReady, done, setPiece, PALETTES } from '/comps/a/lib.js';
+await fontsReady();
+const pal = PALETTES.proof;
+const mk = (w, h, blocks, seq = 0) => { const p = setPiece({ w, h, seq, blocks }, pal); p.style.background = '#e6e0d3'; p.style.outline = '1px solid rgba(26,25,23,.2)'; return p; };
+const C = [
+ ['Roadside', '~4:1 · claim + name', 420, 105, [{ type: 'fit', lines: ['Built to be cut.'], size: 40, wght: 560 }, { type: 'fit', lines: ['Pixelards'], size: 16, wght: 430, at: 'bottom' }]],
+ ['Poster', '2:3 · claim + name', 190, 285, [{ type: 'fit', lines: ['Built', 'to be', 'cut.'], size: 80, wght: 560 }, { type: 'fit', lines: ['Pixelards'], size: 18, wght: 430, at: 'bottom' }]],
+ ['Story', '9:16 · claim + stacked name', 150, 267, [{ type: 'fit', lines: ['Built', 'to be', 'cut.'], size: 60, wght: 560 }, { type: 'fit', lines: ['Pixel', 'ards'], size: 24, wght: 430, at: 'bottom' }]],
+ ['Post', '4:5 · name', 136, 170, [{ type: 'fit', lines: ['Pixelards'], size: 24, wght: 520 }, { type: 'text', html: 'Built to be cut.', size: 10, at: 'bottom', bottom: 10 }]],
+ ['Profile', '1:1 · stacked name', 96, 96, [{ type: 'fit', lines: ['Pixel', 'ards'], size: 30, wght: 540 }]],
+ ['App icon', '1:1 · "-ards"', 56, 56, [{ type: 'fit', lines: ['-ards'], size: 14, wght: 600 }]],
+ ['Favicon', '16 px · back mark only', 16, 16, []],
+];
+const row = document.getElementById('row');
+for (const [n, d, w, h, b] of C) { const c = document.createElement('div'); c.className = 'cell'; const p = mk(w, h, b); c.appendChild(p); const l = document.createElement('div'); l.className = 'lab'; l.innerHTML = `${n}<i>${d}</i>`; c.appendChild(l); row.appendChild(c); }
+// favicon: back mark only, drawn bigger so it reads
+const half = document.getElementById('half');
+const sheet = (w, h, rot) => { const p = mk(w, h, [{ type: 'fit', lines: ['Built', 'to be', 'cut.'], size: w * 0.36, wght: 560 }, { type: 'fit', lines: ['Pixelards'], size: w * 0.14, wght: 430, at: 'bottom' }]); if (rot) p.style.transform = 'rotate(90deg)'; return p; };
+half.appendChild(sheet(124, 176)); const a = document.createElement('div'); a.className = 'arrow'; a.textContent = '→'; half.appendChild(a);
+half.appendChild(sheet(88, 124)); half.appendChild(sheet(88, 124));
+const a2 = document.createElement('div'); a2.className = 'arrow'; a2.textContent = '→'; half.appendChild(a2);
+for (let i = 0; i < 4; i++) half.appendChild(sheet(62, 88));
+await done();
+</script></body></html>
