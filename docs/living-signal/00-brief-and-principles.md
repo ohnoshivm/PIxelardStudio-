@@ -61,6 +61,22 @@ From `docs/archive/2026-10-warp-and-weft/01-reference-analysis.md` (homepage and
 | H6 | **Play leaves a trace** | What the visitor makes persists and pays off later (e.g. a visitor-generated variant travels through the site) |
 | P1–P10 | System rules | One persistent world; DOM-first; scroll as a reversible timeline; authored cameras; spring physics for input; input changes a *world property*; designed sound; content leads; performance as a design constraint; no dead ends |
 
+**Live homepage observations (lusion.co, captured 2026-10-08).** Beyond the hero, the capture confirms how the page is *paced*:
+
+| Section | Observation |
+|---|---|
+| Hero | An editorial page with a framed 3D stage |
+| Reel | The stage expands into a full-width reel with a giant "PLAY ▶ REEL" lockup |
+| Featured work | A **deliberately calm** two-column grid (small caps tags, rolling-text titles) |
+| Tunnel | The page **dissolves into full-bleed black**: a floating figure, then a glinting block tunnel with wireframe figures |
+| Ending | Back to a clean page for the CTA, then the footer **scrolls into "About us"**, with a "Next page" progress line that fills as you scroll |
+
+- **Spectacle budget.** Spectacle is spent in a few set pieces; content sections stay quiet and legible.
+- **Escalation arc.** Contained (framed), then expanding, then calm, then fully immersive, then back to the page.
+- **Cadence.** A recurring row of small marks gives the long scroll a measured rhythm.
+
+These are structural principles we keep. The specific devices listed above are identity, and we leave them.
+
 **Do not echo:**
 - the jack/cross physics pile;
 - the rounded dark hero card on an off-white page;
