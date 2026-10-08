@@ -1,7 +1,7 @@
-# Pixelard Studio website
+# Pixelards: studio website
 
-An immersive studio site built around one idea: **Pixelard ≈ Pixel + Jacquard.** The site is a loom; in the hero, the visitor's cursor is the shuttle.
+**Pixelards** is an Australian, AI-first creative studio. It is branding-first, with distribution, growth and production capabilities.
 
-**Status:** pre-production. The creative direction, storyboards, motion spec and engineering brief are in [`docs/creative/`](docs/creative/README.md). Engineering guidance for coding agents is in [`AGENTS.md`](AGENTS.md).
+**Status:** creative exploration of **THE LIVING SIGNAL**: three visual executions and a recommendation, awaiting approval. See [`docs/living-signal/`](docs/living-signal/). Nothing is final and no production code is written yet.
 
-Planned stack: Next.js (App Router), React Three Fiber / three.js, GSAP, Lenis.
+Agent guidance is in [`AGENTS.md`](AGENTS.md). Superseded earlier work is in [`docs/archive/`](docs/archive/).
