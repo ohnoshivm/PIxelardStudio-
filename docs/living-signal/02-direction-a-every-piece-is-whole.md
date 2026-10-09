@@ -1,6 +1,8 @@
 # 02 — Direction A: Every Piece Is Whole
 
-> **Status:** chosen by the studio from the six candidates in `01-candidates.md`. This document develops it with rendered homepage keyframes.
+> **Status: rejected by the studio (9 Oct 2026).** The studio judged the execution, and the candidate ideas in `01`, to be far below Lusion's level. The direction is kept here as a record of the work and is not to be developed further. The reset starts from `03-sites-that-rival-lusion.md`.
+>
+> Original status: chosen by the studio from the six candidates in `01-candidates.md`. This document develops it with rendered homepage keyframes.
 > **Not final:**
 > - the logo / wordmark drawing
 > - the typeface

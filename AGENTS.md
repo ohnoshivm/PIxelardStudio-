@@ -3,15 +3,18 @@
 ## Project status
 - **Pixelards** is an Australian, AI-first, branding-first creative studio.
 - The site is in **creative exploration** for the concept **THE LIVING SIGNAL** (`docs/living-signal/`).
-- The studio has chosen **Direction A, "Every Piece Is Whole"**. It is awaiting approval of the identity decisions listed in `02` §9.
+- **Reset (9 Oct 2026):** the studio rejected Direction A, "Every Piece Is Whole", and the six candidates in `01` as far below Lusion's level. Those documents are kept as a record only and are not to be developed further.
+- The bar is now **Lusion-level craft**. The reference set is `03-sites-that-rival-lusion.md`. New concepting must be visual-first: concept art, motion and real-GPU review, not stills-only argument.
+- If a capability is missing (image or video generation, a GPU browser, Figma, a deploy target), **ask the studio for it** rather than pushing through without it.
 - **No identity (logo, palette, type, materials) is final, and no production website code may be written until the studio approves.**
 - **Claude Code is the sole production environment.**
 - The earlier "Warp & Weft" pack for "Pixelard" is archived in `docs/archive/2026-10-warp-and-weft/` and superseded.
 
 ## Read first
 1. `docs/living-signal/00-brief-and-principles.md`: brief, strategy, standards, judging criteria.
-2. `docs/living-signal/01-candidates.md`: the six candidate executions the studio chose from.
-3. `docs/living-signal/02-direction-a-every-piece-is-whole.md`: the chosen direction, keyframes and open decisions.
+2. `docs/living-signal/01-candidates.md`: the six rejected candidate executions, kept as a record.
+3. `docs/living-signal/02-direction-a-every-piece-is-whole.md`: the rejected Direction A, kept as a record.
+4. `docs/living-signal/03-sites-that-rival-lusion.md`: the 15-site reference set at Lusion's level, with what to take from each and what to avoid.
 
 ## Non-negotiables (now, and for production later)
 - Do not fabricate case studies, client results, awards, testimonials or credentials. Label placeholders.

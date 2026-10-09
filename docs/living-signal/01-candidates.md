@@ -1,5 +1,7 @@
 # 01 — Candidate Executions of THE LIVING SIGNAL (pick list)
 
+> **Status: all six were rejected by the studio as below the target level (9 Oct 2026). They are kept as a record only.**
+>
 > **Six candidates for the studio to choose from.**
 > - **A–D** came from the multi-agent divergence run (typographic and material lenses), each with its own harsh self-critique. The run was stopped early at the studio's request, so the generative, optics and choreographic lenses never ran.
 > - **E–F** were written by the creative lead to cover those missing angles: light and time, and generative/evolutionary.
